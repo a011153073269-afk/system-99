@@ -1184,19 +1184,7 @@
         // INITIALIZATION
         // --------------------------------------
         
-        document.addEventListener("DOMContentLoaded", () => {
-            createSizesGrid();
-            loadProducts();
-            
-            // Add animation for size cards
-            const cards = document.querySelectorAll('.size-card');
-            cards.forEach((card, index) => {
-                card.style.animation = `fadeIn 0.3s ease ${index * 0.05}s both`;
-            });
-            
-            console.log("✅ صفحة إضافة موديل جاهزة");
-        });
-
+       
         // Prevent accidental form submission
         window.addEventListener("beforeunload", (e) => {
             if (document.getElementById("model").value.trim() || imageData || selectedSizes.size > 0) {
