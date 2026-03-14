@@ -885,7 +885,7 @@
     <!-- Header -->
     <div class="header">
         <div class="logo-area">
-            <a href="javascript:void(0)" onclick="goBack()" class="back-button" title="العودة للرئيسية">←</a>
+            <a href="#" onclick="window.goBack(); return false;" class="back-button" title="العودة للرئيسية">←</a>
             <h1 class="page-title">
                 <strong>📦 المخزن</strong>
             </h1>
@@ -907,13 +907,13 @@
             <input type="text" id="search" placeholder="ابحث عن موديل...">
         </div>
         <div class="filter-buttons">
-            <button class="filter-btn active" onclick="filterProducts('all')">
+            <button class="filter-btn active" onclick="window.filterProducts('all')">
                 الكل <span class="count" id="totalCount">0</span>
             </button>
-            <button class="filter-btn" onclick="filterProducts('low')">
+            <button class="filter-btn" onclick="window.filterProducts('low')">
                 منخفض <span class="count" id="lowCount">0</span>
             </button>
-            <button class="filter-btn" onclick="filterProducts('out')">
+            <button class="filter-btn" onclick="window.filterProducts('out')">
                 نفذ <span class="count" id="outCount">0</span>
             </button>
         </div>
@@ -926,7 +926,7 @@
                 قائمة المنتجات
                 <span id="productCount">(0)</span>
             </h3>
-            <button class="refresh-btn" onclick="refreshData()" title="تحديث">↻</button>
+            <button class="refresh-btn" onclick="window.refreshData()" title="تحديث">↻</button>
         </div>
 
         <table id="productTable">
@@ -981,12 +981,12 @@
     <!-- Edit Modal -->
     <div class="modal" id="editModal">
         <div class="modal-content">
-            <button class="close-modal" onclick="closeModal()">✕</button>
+            <button class="close-modal" onclick="window.closeModal()">✕</button>
             <h2 class="modal-title">تعديل الكمية</h2>
             <input type="number" class="modal-input" id="editQuantity" min="0" placeholder="الكمية الجديدة">
             <div class="modal-buttons">
-                <button class="modal-btn confirm" onclick="confirmEdit()">حفظ</button>
-                <button class="modal-btn cancel" onclick="closeModal()">إلغاء</button>
+                <button class="modal-btn confirm" onclick="window.confirmEdit()">حفظ</button>
+                <button class="modal-btn cancel" onclick="window.closeModal()">إلغاء</button>
             </div>
         </div>
     </div>
@@ -1008,13 +1008,6 @@
         let currentEditIndex = null;
         let currentEditSize = null;
         let searchTimeout = null;
-
-        // --------------------------------------
-        // BACK BUTTON FUNCTION
-        // --------------------------------------
-        function goBack() {
-            window.location.href = 'index.html';
-        }
 
         // Load data from localStorage
         function loadData() {
@@ -1088,10 +1081,10 @@
                                 <td>${getStockStatus(quantity)}</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="btn-edit" onclick="openEditModal(${originalIndex}, '${size}')">
+                                        <button class="btn-edit" onclick="window.openEditModal(${originalIndex}, '${size}')">
                                             ✏️ تعديل
                                         </button>
-                                        <button class="btn-delete" onclick="deleteProduct(${originalIndex})">
+                                        <button class="btn-delete" onclick="window.deleteProduct(${originalIndex})">
                                             🗑️ حذف
                                         </button>
                                     </div>
@@ -1183,8 +1176,8 @@
                     <h2 class="modal-title">🗑️ تأكيد الحذف</h2>
                     <p style="margin: 20px 0; color: var(--dark-gray);">هل أنت متأكد من حذف هذا المنتج؟</p>
                     <div class="modal-buttons">
-                        <button class="modal-btn confirm" onclick="confirmDelete(${index})">نعم، حذف</button>
-                        <button class="modal-btn cancel" onclick="closeDeleteModal()">إلغاء</button>
+                        <button class="modal-btn confirm" onclick="window.confirmDelete(${index})">نعم، حذف</button>
+                        <button class="modal-btn cancel" onclick="window.closeDeleteModal()">إلغاء</button>
                     </div>
                 </div>
             `;
@@ -1394,9 +1387,14 @@
         window.closeModal = closeModal;
         window.confirmEdit = confirmEdit;
         window.deleteProduct = deleteProduct;
-        window.goBack = goBack;
         window.confirmDelete = confirmDelete;
         window.closeDeleteModal = closeDeleteModal;
+
+        // Go back function
+        window.goBack = function() {
+            window.location.href = 'index.html';
+            return false;
+        };
     </script>
 </body>
 </html>
