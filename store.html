@@ -736,6 +736,135 @@
             }
         }
 
+        /* تحسينات إضافية للموبايل */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .page-title {
+                font-size: 1.4em;
+            }
+            
+            .back-button {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1em;
+            }
+            
+            .search-wrapper {
+                min-width: 100%;
+            }
+            
+            #search {
+                padding: 14px 45px 14px 15px;
+                font-size: 0.95em;
+            }
+            
+            .filter-buttons {
+                gap: 5px;
+            }
+            
+            .filter-btn {
+                padding: 8px 12px;
+                font-size: 0.85em;
+            }
+            
+            .table-container {
+                border-radius: 15px;
+            }
+            
+            .table-header {
+                padding: 15px;
+            }
+            
+            th {
+                padding: 12px 8px;
+                font-size: 0.85em;
+            }
+            
+            td {
+                padding: 12px 8px;
+                font-size: 0.9em;
+            }
+            
+            .product-image {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .btn-edit, .btn-delete {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+            
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                margin-top: 20px;
+            }
+            
+            .stat-card {
+                padding: 15px;
+            }
+            
+            .stat-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+            }
+            
+            .stat-value {
+                font-size: 1.2em;
+            }
+            
+            .stat-label {
+                font-size: 0.8em;
+            }
+            
+            .modal-content {
+                padding: 25px;
+                width: 85%;
+            }
+            
+            .modal-title {
+                font-size: 1.3em;
+            }
+            
+            .modal-btn {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .filter-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .filter-btn {
+                flex: 1 1 calc(50% - 5px);
+            }
+            
+            .quick-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .btn-edit, .btn-delete {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
         /* Loading Spinner */
         .spinner {
             width: 40px;
@@ -756,7 +885,7 @@
     <!-- Header -->
     <div class="header">
         <div class="logo-area">
-            <a href="index.html" class="back-button" title="العودة للرئيسية">←</a>
+            <a href="javascript:void(0)" onclick="goBack()" class="back-button" title="العودة للرئيسية">←</a>
             <h1 class="page-title">
                 <strong>📦 المخزن</strong>
             </h1>
@@ -879,6 +1008,13 @@
         let currentEditIndex = null;
         let currentEditSize = null;
         let searchTimeout = null;
+
+        // --------------------------------------
+        // BACK BUTTON FUNCTION
+        // --------------------------------------
+        function goBack() {
+            window.location.href = 'index.html';
+        }
 
         // Load data from localStorage
         function loadData() {
@@ -1033,14 +1169,41 @@
         function deleteProduct(index) {
             if (index === undefined || index === null) return;
             
-            if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
-                const deleted = products[index];
-                products.splice(index, 1);
-                saveData();
-                renderProducts();
-                showNotification(`تم حذف ${deleted.model || 'المنتج'}`, 'success');
-                updateFilterCounts();
-            }
+            // استخدم المودال بتاعنا بدل confirm
+            showDeleteConfirm(index);
+        }
+
+        function showDeleteConfirm(index) {
+            // إنشاء مودال حذف مخصص
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `
+                <div class="modal-content" style="text-align: center;">
+                    <h2 class="modal-title">🗑️ تأكيد الحذف</h2>
+                    <p style="margin: 20px 0; color: var(--dark-gray);">هل أنت متأكد من حذف هذا المنتج؟</p>
+                    <div class="modal-buttons">
+                        <button class="modal-btn confirm" onclick="confirmDelete(${index})">نعم، حذف</button>
+                        <button class="modal-btn cancel" onclick="closeDeleteModal()">إلغاء</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function confirmDelete(index) {
+            const deleted = products[index];
+            products.splice(index, 1);
+            saveData();
+            renderProducts();
+            showNotification(`تم حذف ${deleted.model || 'المنتج'}`, 'success');
+            updateFilterCounts();
+            closeDeleteModal();
+        }
+
+        function closeDeleteModal() {
+            const modal = document.querySelector('.modal:last-child');
+            if (modal) modal.remove();
         }
 
         // Edit functions
@@ -1067,7 +1230,7 @@
             
             const newQty = parseInt(document.getElementById('editQuantity').value);
             if (isNaN(newQty) || newQty < 0) {
-                alert('الرجاء إدخال كمية صحيحة');
+                showNotification('الرجاء إدخال كمية صحيحة', 'error');
                 return;
             }
             
@@ -1176,6 +1339,7 @@
             // ESC to close modal
             if (e.key === 'Escape') {
                 closeModal();
+                closeDeleteModal();
             }
             
             // Ctrl + F to focus search
@@ -1230,6 +1394,9 @@
         window.closeModal = closeModal;
         window.confirmEdit = confirmEdit;
         window.deleteProduct = deleteProduct;
+        window.goBack = goBack;
+        window.confirmDelete = confirmDelete;
+        window.closeDeleteModal = closeDeleteModal;
     </script>
 </body>
 </html>
