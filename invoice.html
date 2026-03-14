@@ -719,31 +719,180 @@
         }
 
         /* -------------------------------------- */
-        /* RESPONSIVE */
+        /* RESPONSIVE - التعديلات الأساسية */
         /* -------------------------------------- */
         
-        @media (max-width: 768px) {
-            body { padding: 15px; }
-            .invoice-container { padding: 20px; }
-            .invoice-header { flex-direction: column; }
-            .header { flex-direction: column; text-align: center; }
-            .header-left { width: 100%; justify-content: center; }
-            .header-right { width: 100%; justify-content: center; }
+        @media (max-width: 1024px) {
+            body { padding: 20px; }
+            .header { padding: 15px; }
         }
 
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-left {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .invoice-container { 
+                padding: 20px; 
+            }
+            
+            .invoice-header { 
+                flex-direction: column; 
+            }
+            
+            .quick-actions { 
+                flex-wrap: wrap; 
+                justify-content: center;
+            }
+        }
+
+        /* تحسينات إضافية للموبايل */
         @media (max-width: 480px) {
-            .page-title { font-size: 1.5em; }
-            .invoice-number-value { font-size: 1.5em; }
-            .action-buttons button { min-width: 100%; }
-            .quick-actions { flex-wrap: wrap; }
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .page-title {
+                font-size: 1.5em;
+            }
+            
+            .back-button {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1em;
+            }
+            
+            .badge {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+            
+            .invoice-container {
+                padding: 15px;
+            }
+            
+            .invoice-title {
+                font-size: 1.5em;
+            }
+            
+            .invoice-number-value {
+                font-size: 1.3em;
+            }
+            
+            .invoice-number {
+                padding: 10px 15px;
+            }
+            
+            .quick-btn {
+                padding: 8px 15px;
+                font-size: 0.85em;
+            }
+            
+            th {
+                padding: 12px 8px;
+                font-size: 0.85em;
+            }
+            
+            td {
+                padding: 12px 8px;
+                font-size: 0.9em;
+            }
+            
+            select, input {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+            
+            .delete-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 1em;
+            }
+            
+            .invoice-summary {
+                padding: 15px;
+            }
+            
+            .summary-row {
+                padding: 10px 0;
+            }
+            
+            .summary-label {
+                font-size: 0.9em;
+            }
+            
+            .summary-value {
+                font-size: 1em;
+            }
+            
+            .summary-total {
+                font-size: 1.2em;
+            }
+            
+            .action-buttons button {
+                min-width: 100%;
+                padding: 15px;
+                font-size: 1em;
+            }
+            
+            .modal-content {
+                padding: 25px;
+                width: 85%;
+            }
+            
+            .modal-title {
+                font-size: 1.3em;
+            }
+            
+            .modal-icon {
+                font-size: 3em;
+            }
+            
+            .modal-btn {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .quick-actions {
+                flex-direction: column;
+            }
+            
+            .quick-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .badge {
+                flex: 1;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header - تم تعديل زر الرجوع -->
     <div class="header">
         <div class="header-left">
-            <a href="index.html" class="back-button" title="العودة للرئيسية">←</a>
+            <a href="javascript:void(0)" onclick="goBack()" class="back-button" title="العودة للرئيسية">←</a>
             <h1 class="page-title">
                 <strong>🧾 فاتورة</strong> بيع
             </h1>
@@ -880,6 +1029,13 @@
             '44': 140,
             '45': 150
         };
+
+        // --------------------------------------
+        // BACK BUTTON FUNCTION - إضافة دالة الرجوع
+        // --------------------------------------
+        function goBack() {
+            window.location.href = 'index.html';
+        }
 
         // Load products from localStorage
         function loadProducts() {
@@ -1108,18 +1264,45 @@
             }, 200);
         };
 
-        // Clear all rows
+        // Clear all rows - تم تعديلها لإزالة confirm
         window.clearAll = function() {
             if (document.querySelectorAll("#invoice tbody tr").length === 0) return;
             
-            if (confirm("هل أنت متأكد من تفريغ الفاتورة؟")) {
-                const tbody = document.querySelector("#invoice tbody");
-                tbody.innerHTML = "";
-                updateSummary();
-                updateButtons();
-                showNotification("تم تفريغ الفاتورة", "success");
-            }
+            // استخدام المودال بدل confirm
+            showClearAllConfirm();
         };
+
+        function showClearAllConfirm() {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-icon">🗑️</div>
+                    <h2 class="modal-title">تأكيد التفريغ</h2>
+                    <p class="modal-text">هل أنت متأكد من تفريغ الفاتورة بالكامل؟</p>
+                    <div class="modal-buttons">
+                        <button class="modal-btn confirm" onclick="confirmClearAll()">نعم، تفريغ</button>
+                        <button class="modal-btn cancel" onclick="closeClearAllModal()">إلغاء</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function confirmClearAll() {
+            const tbody = document.querySelector("#invoice tbody");
+            tbody.innerHTML = "";
+            updateSummary();
+            updateButtons();
+            showNotification("تم تفريغ الفاتورة", "success");
+            closeClearAllModal();
+        }
+
+        function closeClearAllModal() {
+            const modal = document.querySelector('.modal:last-child');
+            if (modal) modal.remove();
+        }
 
         // --------------------------------------
         // SUMMARY CALCULATIONS
@@ -1310,6 +1493,9 @@
                 return;
             }
             
+            // استخدم showNotification بدل alert
+            showNotification("تم إرسال المعاينة إلى الكونسول", "success");
+            
             let preview = "=== معاينة الفاتورة ===\n\n";
             preview += `رقم: ${document.getElementById("invoiceNumber").textContent}\n`;
             preview += `التاريخ: ${document.getElementById("currentDate").textContent}\n\n`;
@@ -1328,7 +1514,6 @@
             preview += `\nالإجمالي: ${document.getElementById("totalAmount").textContent}`;
             
             console.log(preview);
-            alert(preview);
         };
 
         window.printInvoice = function() {
@@ -1375,6 +1560,7 @@
             // ESC to close modal
             if (e.key === "Escape") {
                 closeModal();
+                closeClearAllModal();
             }
         });
 
@@ -1403,14 +1589,12 @@
             console.log("✅ صفحة الفاتورة جاهزة");
         });
 
-        // Prevent accidental page leave
-        window.addEventListener("beforeunload", (e) => {
-            const rows = document.querySelectorAll("#invoice tbody tr").length;
-            if (rows > 0) {
-                e.preventDefault();
-                e.returnValue = "";
-            }
-        });
+        
+
+        // Make functions global
+        window.goBack = goBack;
+        window.confirmClearAll = confirmClearAll;
+        window.closeClearAllModal = closeClearAllModal;
     </script>
 </body>
 </html>
