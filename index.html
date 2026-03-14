@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة محل الكوتشيات | الرئيسية</title>
+    <style>
+        /*
+        ========================================
+        SYSTEM NAME: Shoe Store Management System
+        VERSION: 2.0.0
+        DESIGNER: Custom Design
+        DATE: 2024
+        ========================================
+        */
+
+        /* -------------------------------------- */
+        /* CSS RESET - إعادة تعيين جميع القيم      */
+        /* -------------------------------------- */
+        
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* -------------------------------------- */
+        /* CUSTOM PROPERTIES - متغيرات CSS       */
+        /* -------------------------------------- */
+        
+        :root {
+            /* Color System - نظام الألوان */
+            --pure-black: #000000;
+            --pure-white: #ffffff;
+            --off-white: #f8f8f8;
+            --light-gray: #eaeaea;
+            --medium-gray: #cccccc;
+            --dark-gray: #333333;
+            --charcoal: #222222;
+            --graphite: #1a1a1a;
+            
+            /* Typography - الخطوط */
+            --font-primary: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            --font-size-xs: 0.75rem;    /* 12px */
+            --font-size-sm: 0.875rem;    /* 14px */
+            --font-size-base: 1rem;       /* 16px */
+            --font-size-lg: 1.125rem;     /* 18px */
+            --font-size-xl: 1.25rem;      /* 20px */
+            --font-size-2xl: 1.5rem;       /* 24px */
+            --font-size-3xl: 2rem;         /* 32px */
+            --font-size-4xl: 2.5rem;       /* 40px */
+            
+            /* Spacing - المسافات */
+            --space-xs: 0.5rem;    /* 8px */
+            --space-sm: 1rem;       /* 16px */
+            --space-md: 1.5rem;     /* 24px */
+            --space-lg: 2rem;       /* 32px */
+            --space-xl: 3rem;       /* 48px */
+            --space-2xl: 4rem;      /* 64px */
+            --space-3xl: 6rem;      /* 96px */
+            
+            /* Shadows - الظلال */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.12);
+            
+            /* Border Radius - الحدود الدائرية */
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --radius-full: 9999px;
+            
+            /* Transitions - الحركات */
+            --transition-fast: 0.2s ease;
+            --transition-base: 0.3s ease;
+            --transition-slow: 0.5s ease;
+            --transition-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            
+            /* Z-index layers */
+            --z-background: -1;
+            --z-base: 1;
+            --z-dropdown: 10;
+            --z-sticky: 100;
+            --z-modal: 1000;
+            --z-popover: 2000;
+            --z-toast: 3000;
+        }
+
+        /* -------------------------------------- */
+        /* BASE STYLES - الأنماط الأساسية         */
+        /* -------------------------------------- */
+        
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            direction: rtl;
+            font-family: var(--font-primary);
+            background: var(--pure-white);
+            color: var(--charcoal);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-md);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* خلفية بنمط جريد دقيق جداً */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(var(--light-gray) 0.5px, transparent 0.5px),
+                linear-gradient(90deg, var(--light-gray) 0.5px, transparent 0.5px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: var(--z-background);
+        }
+
+        /* تأثير خلفية متحرك خفيف */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            background: radial-gradient(circle at 70% 30%, rgba(0,0,0,0.02) 0%, transparent 50%);
+            animation: grain 8s steps(10) infinite;
+            pointer-events: none;
+            z-index: var(--z-background);
+        }
+
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-1%, -1%); }
+            20% { transform: translate(1%, 1%); }
+            30% { transform: translate(-2%, 1%); }
+            40% { transform: translate(2%, -1%); }
+            50% { transform: translate(-1%, 2%); }
+            60% { transform: translate(1%, -2%); }
+            70% { transform: translate(-2%, -1%); }
+            80% { transform: translate(2%, 1%); }
+            90% { transform: translate(-1%, -2%); }
+        }
+
+        /* -------------------------------------- */
+        /* MAIN CONTAINER - الحاوية الرئيسية      */
+        /* -------------------------------------- */
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl) var(--space-xl);
+            position: relative;
+            z-index: var(--z-base);
+            box-shadow: var(--shadow-lg);
+            animation: containerAppear 1s var(--transition-bounce) forwards;
+        }
+
+        @keyframes containerAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.98) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* خط علوي أنيق */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--pure-black), transparent);
+            border-radius: var(--radius-full);
+            opacity: 0.3;
+        }
+
+        /* -------------------------------------- */
+        /* LOGO SECTION - قسم اللوجو              */
+        /* -------------------------------------- */
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+            position: relative;
+        }
+
+        .logo-wrapper {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto var(--space-md);
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* دائرة خلفية متحركة */
+        .logo-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--radius-full);
+            animation: pulseRing 2s ease-out infinite;
+        }
+
+        @keyframes pulseRing {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.2;
+            }
+            100% {
+                transform: scale(0.95);
+                opacity: 0.5;
+            }
+        }
+
+        .logo-wrapper::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 1px dashed rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-full);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: var(--radius-full);
+            background: var(--pure-white);
+            padding: 15px;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-base);
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .brand-name {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            color: var(--pure-black);
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-xs);
+            position: relative;
+            display: inline-block;
+        }
+
+        .brand-name::before,
+        .brand-name::after {
+            content: '✦';
+            color: var(--dark-gray);
+            font-size: var(--font-size-base);
+            margin: 0 var(--space-sm);
+            opacity: 0.5;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .brand-sub {
+            font-size: var(--font-size-sm);
+            color: var(--medium-gray);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 300;
+        }
+
+        /* -------------------------------------- */
+        /* TITLE SECTION - قسم العنوان           */
+        /* -------------------------------------- */
+        
+        .title-section {
+            text-align: center;
+            margin-bottom: var(--space-2xl);
+            position: relative;
+        }
+
+        .title-main {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: 400;
+            color: var(--charcoal);
+            line-height: 1.3;
+            margin-bottom: var(--space-sm);
+        }
+
+        .title-main strong {
+            font-weight: 700;
+            color: var(--pure-black);
+            position: relative;
+            display: inline-block;
+        }
+
+        .title-main strong::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--pure-black);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform var(--transition-base);
+        }
+
+        .title-main:hover strong::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .title-decoration {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            margin-top: var(--space-sm);
+        }
+
+        .decoration-line {
+            width: 50px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--pure-black), transparent);
+        }
+
+        .decoration-icon {
+            color: var(--dark-gray);
+            font-size: var(--font-size-lg);
+            opacity: 0.5;
+        }
+
+        /* -------------------------------------- */
+        /* MENU GRID - شبكة القائمة              */
+        /* -------------------------------------- */
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-2xl);
+        }
+
+        /* Card Styles - أنماط البطاقات */
+        .menu-card {
+            position: relative;
+            background: var(--pure-white);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl) var(--space-lg);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: var(--space-sm);
+        }
+
+        /* خلفية متحركة */
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--pure-black);
+            transform: translateY(100%);
+            transition: transform var(--transition-base);
+            z-index: 0;
+        }
+
+        .menu-card:hover::before {
+            transform: translateY(0);
+        }
+
+        .menu-card:hover {
+            border-color: var(--pure-black);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .menu-card:active {
+            transform: translateY(-4px);
+        }
+
+        /* Icon Styles - أنماط الأيقونات */
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: var(--space-xs);
+            position: relative;
+            z-index: 1;
+            transition: all var(--transition-base);
+            filter: drop-shadow(var(--shadow-sm));
+        }
+
+        .menu-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+            color: var(--pure-white);
+            filter: drop-shadow(0 4px 8px rgba(255, 255, 255, 0.3));
+        }
+
+        /* Title Styles - أنماط العنوان */
+        .card-title {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--pure-black);
+            position: relative;
+            z-index: 1;
+            transition: color var(--transition-base);
+            margin-bottom: var(--space-xs);
+        }
+
+        .menu-card:hover .card-title {
+            color: var(--pure-white);
+        }
+
+        /* Description Styles - أنماط الوصف */
+        .card-description {
+            font-size: var(--font-size-sm);
+            color: var(--medium-gray);
+            position: relative;
+            z-index: 1;
+            transition: color var(--transition-base);
+            line-height: 1.6;
+        }
+
+        .menu-card:hover .card-description {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Meta Info - معلومات إضافية */
+        .card-meta {
+            margin-top: var(--space-sm);
+            padding-top: var(--space-sm);
+            border-top: 1px solid var(--light-gray);
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            transition: border-color var(--transition-base);
+            font-size: var(--font-size-xs);
+            color: var(--medium-gray);
+        }
+
+        .menu-card:hover .card-meta {
+            border-top-color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* تأثير تموج عند النقر */
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple 0.6s ease-out;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* -------------------------------------- */
+        /* STATS SECTION - قسم الإحصائيات        */
+        /* -------------------------------------- */
+        
+        .stats-section {
+            margin-top: var(--space-2xl);
+            padding: var(--space-xl) 0 0;
+            border-top: 2px dashed var(--light-gray);
+            position: relative;
+        }
+
+        .stats-header {
+            text-align: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .stats-header h3 {
+            font-size: var(--font-size-lg);
+            font-weight: 400;
+            color: var(--dark-gray);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stats-header p {
+            font-size: var(--font-size-sm);
+            color: var(--medium-gray);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: var(--space-md);
+            background: var(--off-white);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--pure-black);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--transition-base);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-value {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--pure-black);
+            line-height: 1;
+            margin-bottom: var(--space-xs);
+            font-feature-settings: 'tnum';
+        }
+
+        .stat-label {
+            font-size: var(--font-size-xs);
+            color: var(--medium-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        .stat-trend {
+            margin-top: var(--space-xs);
+            font-size: var(--font-size-xs);
+            color: var(--dark-gray);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .stat-card:hover .stat-trend {
+            opacity: 1;
+        }
+
+        /* -------------------------------------- */
+        /* FOOTER SECTION - قسم التذييل          */
+        /* -------------------------------------- */
+        
+        .footer-section {
+            margin-top: var(--space-2xl);
+            padding-top: var(--space-lg);
+            text-align: center;
+            font-size: var(--font-size-xs);
+            color: var(--medium-gray);
+            border-top: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        .footer-links a {
+            color: var(--dark-gray);
+            text-decoration: none;
+            transition: color var(--transition-base);
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--pure-black);
+            transform: scaleX(0);
+            transition: transform var(--transition-base);
+        }
+
+        .footer-links a:hover {
+            color: var(--pure-black);
+        }
+
+        .footer-links a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .footer-version {
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+
+        /* -------------------------------------- */
+        /* RESPONSIVE DESIGN - التصميم المتجاوب  */
+        /* -------------------------------------- */
+        
+        @media (max-width: 1024px) {
+            :root {
+                --space-2xl: 3rem;
+                --space-xl: 2rem;
+            }
+            
+            .container {
+                padding: var(--space-xl) var(--space-lg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-sm);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid .stat-card:last-child {
+                grid-column: span 2;
+            }
+
+            .footer-section {
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --space-2xl: 2rem;
+                --space-xl: 1.5rem;
+                --space-lg: 1rem;
+            }
+
+            .logo-wrapper {
+                width: 120px;
+                height: 120px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid .stat-card:last-child {
+                grid-column: auto;
+            }
+
+            .card-icon {
+                font-size: 2.5rem;
+            }
+
+            .card-title {
+                font-size: var(--font-size-lg);
+            }
+        }
+
+        @media (max-width: 360px) {
+            .logo-wrapper {
+                width: 100px;
+                height: 100px;
+            }
+
+            .container {
+                padding: var(--space-lg) var(--space-sm);
+            }
+        }
+
+        /* -------------------------------------- */
+        /* PRINT STYLES - أنماط الطباعة          */
+        /* -------------------------------------- */
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                border: 1px solid #000;
+            }
+
+            .menu-card {
+                break-inside: avoid;
+                border: 1px solid #000;
+            }
+
+            .footer-section,
+            .stats-section {
+                display: none;
+            }
+        }
+
+        /* -------------------------------------- */
+        /* ACCESSIBILITY - إمكانية الوصول        */
+        /* -------------------------------------- */
+        
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        .menu-card:focus-visible {
+            outline: 2px solid var(--pure-black);
+            outline-offset: 2px;
+        }
+
+        /* Skip to content link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--pure-black);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            text-decoration: none;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-link">تخطي إلى المحتوى الرئيسي</a>
+
+    <main class="container" id="main-content" role="main">
+        <!-- Logo Section -->
+        <div class="logo-section" role="banner">
+            <div class="logo-wrapper">
+                <img src="logo.png" alt="شعار محل الكوتشيات" class="logo" loading="eager">
+            </div>
+            <h2 class="brand-name">SHOE STORE</h2>
+            <p class="brand-sub">EST. 2024</p>
+        </div>
+
+        <!-- Title Section -->
+        <div class="title-section">
+            <h1 class="title-main">
+                <strong>نظام إدارة</strong> محل الكوتشيات
+            </h1>
+            <div class="title-decoration" aria-hidden="true">
+                <span class="decoration-line"></span>
+                <span class="decoration-icon">⚡</span>
+                <span class="decoration-line"></span>
+            </div>
+        </div>
+
+        <!-- Menu Grid Section -->
+        <nav class="menu-grid" aria-label="القائمة الرئيسية">
+            <button class="menu-card" onclick="navigateTo('store.html')" aria-label="المخزن - عرض وإدارة المخزون">
+                <span class="card-icon" aria-hidden="true">📦</span>
+                <h3 class="card-title">المخزن</h3>
+                <p class="card-description">عرض وإدارة جميع المنتجات في المخزون</p>
+                <div class="card-meta">آخر تحديث: الآن</div>
+            </button>
+
+            <button class="menu-card" onclick="navigateTo('add.html')" aria-label="إضافة بضاعة - إضافة منتجات جديدة">
+                <span class="card-icon" aria-hidden="true">➕</span>
+                <h3 class="card-title">إضافة بضاعة</h3>
+                <p class="card-description">إضافة منتجات جديدة وتحديث المخزون</p>
+                <div class="card-meta">عدد المنتجات: 0</div>
+            </button>
+
+            <button class="menu-card" onclick="navigateTo('invoice.html')" aria-label="فاتورة بيع - إنشاء فاتورة جديدة">
+                <span class="card-icon" aria-hidden="true">🧾</span>
+                <h3 class="card-title">فاتورة بيع</h3>
+                <p class="card-description">إنشاء فواتير البيع للعملاء</p>
+                <div class="card-meta">آخر فاتورة: -</div>
+            </button>
+
+            <button class="menu-card" onclick="navigateTo('expenses.html')" aria-label="المصروفات - تسجيل المصروفات">
+                <span class="card-icon" aria-hidden="true">💸</span>
+                <h3 class="card-title">المصروفات</h3>
+                <p class="card-description">تسجيل ومتابعة المصروفات اليومية</p>
+                <div class="card-meta">مصروفات اليوم: 0.00</div>
+            </button>
+        </nav>
+
+        <!-- Stats Section -->
+        <section class="stats-section" aria-label="إحصائيات سريعة">
+            <header class="stats-header">
+                <h3>إحصائيات سريعة</h3>
+                <p>آخر تحديث: <span id="lastUpdate">منذ لحظات</span></p>
+            </header>
+
+            <div class="stats-grid">
+                <article class="stat-card">
+                    <div class="stat-value" id="totalProducts">0</div>
+                    <div class="stat-label">إجمالي المنتجات</div>
+                    <div class="stat-trend" id="productTrend">+0% عن الأمس</div>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-value" id="todaySales">0.00</div>
+                    <div class="stat-label">مبيعات اليوم</div>
+                    <div class="stat-trend" id="salesTrend">+0% عن الأمس</div>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-value" id="todayExpenses">0.00</div>
+                    <div class="stat-label">مصروفات اليوم</div>
+                    <div class="stat-trend" id="expensesTrend">0% من الإيرادات</div>
+                </article>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        /*
+        ========================================
+        SYSTEM CORE - النواة الأساسية للنظام
+        VERSION: 2.0.0
+        LAST UPDATE: 2024
+        ========================================
+        */
+
+        // --------------------------------------
+        // APPLICATION STATE - حالة التطبيق
+        // --------------------------------------
+        
+        const AppState = {
+            currentPage: window.location.pathname.split('/').pop() || 'index.html',
+            lastUpdate: new Date(),
+            stats: {
+                products: 0,
+                sales: 0,
+                expenses: 0
+            },
+            trends: {
+                products: 0,
+                sales: 0,
+                expenses: 0
+            },
+            settings: {
+                currency: '₪',
+                storeName: 'محل الكوتشيات',
+                theme: 'light'
+            }
+        };
+
+        // --------------------------------------
+        // DOM ELEMENTS - عناصر الصفحة
+        // --------------------------------------
+        
+        const DOM = {
+            lastUpdate: document.getElementById('lastUpdate'),
+            totalProducts: document.getElementById('totalProducts'),
+            todaySales: document.getElementById('todaySales'),
+            todayExpenses: document.getElementById('todayExpenses'),
+            productTrend: document.getElementById('productTrend'),
+            salesTrend: document.getElementById('salesTrend'),
+            expensesTrend: document.getElementById('expensesTrend'),
+            menuCards: document.querySelectorAll('.menu-card'),
+            statCards: document.querySelectorAll('.stat-card')
+        };
+
+        // --------------------------------------
+        // UTILITY FUNCTIONS - دوال مساعدة
+        // --------------------------------------
+        
+        const Utils = {
+            // تنسيق التاريخ
+            formatDate: (date) => {
+                const options = {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                };
+                return date.toLocaleString('ar-EG', options);
+            },
+
+            // تنسيق العملة
+            formatCurrency: (value) => {
+                return `${AppState.settings.currency} ${value.toFixed(2)}`;
+            },
+
+            // إضافة تأثير التموج
+            createRipple: (event, element) => {
+                const ripple = document.createElement('span');
+                const rect = element.getBoundingClientRect();
+                
+                const size = Math.max(rect.width, rect.height);
+                const x = event.clientX - rect.left - size / 2;
+                const y = event.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                ripple.classList.add('ripple-effect');
+                
+                const existingRipple = element.querySelector('.ripple-effect');
+                if (existingRipple) {
+                    existingRipple.remove();
+                }
+                
+                element.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            },
+
+            // حفظ في localStorage
+            saveToStorage: (key, value) => {
+                try {
+                    localStorage.setItem(`shoeStore_${key}`, JSON.stringify(value));
+                } catch (error) {
+                    console.warn('LocalStorage is not available:', error);
+                }
+            },
+
+            // قراءة من localStorage
+            loadFromStorage: (key) => {
+                try {
+                    const item = localStorage.getItem(`shoeStore_${key}`);
+                    return item ? JSON.parse(item) : null;
+                } catch (error) {
+                    console.warn('LocalStorage is not available:', error);
+                    return null;
+                }
+            }
+        };
+
+        // --------------------------------------
+        // STATS MANAGER - مدير الإحصائيات
+        // --------------------------------------
+        
+        const StatsManager = {
+            // تحديث الإحصائيات
+            update: () => {
+                // محاكاة بيانات (هنا هتيجي من قاعدة البيانات)
+                AppState.stats = {
+                    products: 0,
+                    sales: 0,
+                    expenses: 0
+                };
+
+                AppState.trends = {
+                    products: 0,
+                    sales: 0,
+                    expenses: 0
+                };
+
+                StatsManager.render();
+            },
+
+            // عرض الإحصائيات
+            render: () => {
+                if (DOM.totalProducts) {
+                    DOM.totalProducts.textContent = AppState.stats.products;
+                }
+                if (DOM.todaySales) {
+                    DOM.todaySales.textContent = Utils.formatCurrency(AppState.stats.sales);
+                }
+                if (DOM.todayExpenses) {
+                    DOM.todayExpenses.textContent = Utils.formatCurrency(AppState.stats.expenses);
+                }
+                if (DOM.productTrend) {
+                    DOM.productTrend.textContent = `${AppState.trends.products > 0 ? '+' : ''}${AppState.trends.products}% عن الأمس`;
+                }
+                if (DOM.salesTrend) {
+                    DOM.salesTrend.textContent = `${AppState.trends.sales > 0 ? '+' : ''}${AppState.trends.sales}% عن الأمس`;
+                }
+                if (DOM.expensesTrend) {
+                    DOM.expensesTrend.textContent = `${AppState.trends.expenses}% من الإيرادات`;
+                }
+
+                // تحديث وقت آخر تحديث
+                if (DOM.lastUpdate) {
+                    DOM.lastUpdate.textContent = Utils.formatDate(new Date());
+                }
+            },
+
+            // بدء التحديث الدوري
+            startAutoUpdate: () => {
+                StatsManager.update();
+                setInterval(() => {
+                    StatsManager.update();
+                }, 30000); // تحديث كل 30 ثانية
+            }
+        };
+
+        // --------------------------------------
+        // NAVIGATION MANAGER - مدير التنقل
+        // --------------------------------------
+        
+        const NavigationManager = {
+            // التنقل بين الصفحات
+            navigate: (page) => {
+                if (!page) return;
+
+                // حفظ الحالة الحالية
+                Utils.saveToStorage('lastPage', page);
+                Utils.saveToStorage('lastVisit', new Date().toISOString());
+
+                // تأثير الخروج
+                document.body.style.opacity = '0';
+                document.body.style.transform = 'scale(0.98)';
+                document.body.style.transition = 'all 0.3s ease';
+
+                // التنقل بعد التأثير
+                setTimeout(() => {
+                    window.location.href = page;
+                }, 300);
+            },
+
+            // التحقق من وجود الصفحة
+            checkPage: async (page) => {
+                try {
+                    const response = await fetch(page, { method: 'HEAD' });
+                    return response.ok;
+                } catch {
+                    return false;
+                }
+            }
+        };
+
+        // --------------------------------------
+        // UI MANAGER - مدير واجهة المستخدم
+        // --------------------------------------
+        
+        const UIManager = {
+            // تهيئة الأحداث
+            initEvents: () => {
+                // إضافة تأثيرات للأزرار
+                DOM.menuCards.forEach(card => {
+                    // تأثير التموج عند النقر
+                    card.addEventListener('click', (e) => {
+                        Utils.createRipple(e, card);
+                    });
+
+                    // تأثيرات إضافية
+                    card.addEventListener('mouseenter', () => {
+                        card.style.transition = 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                    });
+
+                    // منع النقر المزدوج من تحديد النص
+                    card.addEventListener('mousedown', (e) => {
+                        e.preventDefault();
+                    });
+                });
+
+                // إضافة تأثيرات للبطاقات الإحصائية
+                DOM.statCards.forEach((card, index) => {
+                    card.style.animation = `fadeInUp 0.5s ease ${index * 0.1}s both`;
+                });
+
+                // التعامل مع الروابط
+                document.querySelectorAll('.footer-links a').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        console.log('🚀 تم النقر على:', link.textContent.trim());
+                        // هنا هتضيف المنطق بتاعك
+                    });
+                });
+            },
+
+            // التحقق من وجود اللوجو
+            checkLogo: () => {
+                const logo = document.querySelector('.logo');
+                if (logo) {
+                    logo.onerror = () => {
+                        console.warn('⚠️ ملف اللوجو غير موجود - تأكد من وجود logo.png في نفس المسار');
+                        // استخدام لوجو احتياطي
+                        logo.style.backgroundColor = 'var(--pure-black)';
+                        logo.style.padding = '20px';
+                        logo.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50" y="70" font-size="50" text-anchor="middle" fill="white">👟</text></svg>';
+                    };
+                }
+            },
+
+            // إضافة animations للعناصر
+            animateElements: () => {
+                const elements = document.querySelectorAll('.menu-card, .stat-card');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                elements.forEach(el => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
+                    el.style.transition = 'all 0.5s ease';
+                    observer.observe(el);
+                });
+            }
+        };
+
+        // --------------------------------------
+        // KEYBOARD SHORTCUTS - اختصارات لوحة المفاتيح
+        // --------------------------------------
+        
+        const KeyboardManager = {
+            init: () => {
+                document.addEventListener('keydown', (e) => {
+                    // Alt + 1: المخزن
+                    if (e.altKey && e.key === '1') {
+                        e.preventDefault();
+                        NavigationManager.navigate('store.html');
+                    }
+                    // Alt + 2: إضافة بضاعة
+                    else if (e.altKey && e.key === '2') {
+                        e.preventDefault();
+                        NavigationManager.navigate('add.html');
+                    }
+                    // Alt + 3: فاتورة بيع
+                    else if (e.altKey && e.key === '3') {
+                        e.preventDefault();
+                        NavigationManager.navigate('invoice.html');
+                    }
+                    // Alt + 4: المصروفات
+                    else if (e.altKey && e.key === '4') {
+                        e.preventDefault();
+                        NavigationManager.navigate('expenses.html');
+                    }
+                    // ESC: العودة للرئيسية
+                    else if (e.key === 'Escape' && !window.location.pathname.includes('index.html')) {
+                        NavigationManager.navigate('index.html');
+                    }
+                });
+            }
+        };
+
+        // --------------------------------------
+        // PERFORMANCE MONITORING - مراقبة الأداء
+        // --------------------------------------
+        
+        const PerformanceMonitor = {
+            init: () => {
+                // قياس وقت تحميل الصفحة
+                window.addEventListener('load', () => {
+                    const timing = performance.timing;
+                    const loadTime = timing.loadEventEnd - timing.navigationStart;
+                    console.log(`📊 وقت تحميل الصفحة: ${loadTime}ms`);
+                    
+                    if (loadTime > 2000) {
+                        console.warn('⚠️ وقت التحميل بطيء، يرجى تحسين الأداء');
+                    }
+                });
+
+                // مراقبة الذاكرة
+                if (performance.memory) {
+                    setInterval(() => {
+                        const usedHeap = performance.memory.usedJSHeapSize / 1024 / 1024;
+                        console.log(`💾 استخدام الذاكرة: ${usedHeap.toFixed(2)} MB`);
+                    }, 30000);
+                }
+            }
+        };
+
+        // --------------------------------------
+        // MAIN INITIALIZATION - التهيئة الرئيسية
+        // --------------------------------------
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 نظام إدارة محل الكوتشيات - الإصدار 2.0.0');
+            console.log('📁 المسار الحالي:', window.location.pathname);
+            
+            // تهيئة جميع الأنظمة
+            UIManager.checkLogo();
+            UIManager.initEvents();
+            UIManager.animateElements();
+            
+            StatsManager.startAutoUpdate();
+            KeyboardManager.init();
+            PerformanceMonitor.init();
+            
+            // التحقق من الصفحات
+            const pages = ['store.html', 'add.html', 'invoice.html', 'expenses.html'];
+            pages.forEach(page => {
+                NavigationManager.checkPage(page).then(exists => {
+                    if (!exists) {
+                        console.warn(`⚠️ تحذير: الصفحة ${page} غير موجودة`);
+                    }
+                });
+            });
+
+            // استرجاع آخر حالة
+            const lastVisit = Utils.loadFromStorage('lastVisit');
+            if (lastVisit) {
+                console.log('👋 مرحباً بعودتك! آخر زيارة:', new Date(lastVisit).toLocaleString('ar-EG'));
+            }
+
+            // حفظ الزيارة الحالية
+            Utils.saveToStorage('lastVisit', new Date().toISOString());
+        });
+
+        // --------------------------------------
+        // EXPORTED FUNCTIONS - دوال عامة
+        // --------------------------------------
+        
+        // دالة التنقل (للاستخدام في onclick)
+        window.navigateTo = function(page) {
+            NavigationManager.navigate(page);
+        };
+
+        // دالة تحديث الإحصائيات (للاستخدام العام)
+        window.refreshStats = function() {
+            StatsManager.update();
+        };
+
+        // منع إعادة تحميل الصفحة عند النقر على الروابط
+        window.addEventListener('beforeunload', () => {
+            Utils.saveToStorage('lastPage', window.location.pathname);
+        });
+
+        // التعامل مع الأخطاء
+        window.addEventListener('error', (e) => {
+            console.error('❌ خطأ:', e.message);
+        });
+
+        // --------------------------------------
+        // END OF SYSTEM - نهاية النظام
+        // --------------------------------------
+        
+        console.log('✅ تم تهيئة النظام بنجاح');
+    </script>
+</body>
+</html>
